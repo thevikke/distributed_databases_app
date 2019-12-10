@@ -1,4 +1,7 @@
+import 'package:distributed_databases_app/components.dart';
+import 'package:distributed_databases_app/state.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,46 +15,45 @@ const String frenchFlagURL =
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Distributed Databases Demo',
-      home: SelectCountry(),
-    );
+    return ChangeNotifierProvider<AppState>(
+        create: (_) => AppState(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Distributed Databases Demo',
+          home: SelectCountry(),
+        ));
   }
 }
 
-class SelectCountry extends StatefulWidget {
-  SelectCountry({Key key}) : super(key: key);
-
-  @override
-  _SelectCountryState createState() => _SelectCountryState();
-}
-
-class _SelectCountryState extends State<SelectCountry> {
+class SelectCountry extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final appState = Provider.of<AppState>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink,
-        title: Text("Select country"),
+        title: Text("Select Country"),
       ),
       body: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             ImageButton(() {
+              appState.setCountry("Finland");
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return CountryPage("Finland");
+                return CountryPage();
               }));
             }, finnishFlagURL, "Finland"),
             ImageButton(() {
+              appState.setCountry("Spain");
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return CountryPage("Spain");
+                return CountryPage();
               }));
             }, spanishFlagURL, "Spain"),
             ImageButton(() {
+              appState.setCountry("France");
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return CountryPage("France");
+                return CountryPage();
               }));
             }, frenchFlagURL, "France"),
           ],
@@ -61,45 +63,15 @@ class _SelectCountryState extends State<SelectCountry> {
   }
 }
 
-class ImageButton extends StatelessWidget {
-  const ImageButton(this.onTap, this.imageURL, this.title);
-  final Function onTap;
-  final String imageURL;
-  final String title;
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Container(
-          width: 200,
-          height: 200,
-          child: InkWell(
-            onTap: onTap,
-            child: Image.network(imageURL),
-          ),
-        ),
-        Text(
-          title,
-          style: TextStyle(fontSize: 20),
-        ),
-      ],
-    );
-  }
-}
-
-class CountryPage extends StatefulWidget {
-  CountryPage(this.country, {Key key}) : super(key: key);
-  final String country;
-  @override
-  _CountryPageState createState() => _CountryPageState();
-}
-
-class _CountryPageState extends State<CountryPage> {
+class CountryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Consumer<AppState>(
+          builder: (context, appState, child) => Text(appState.country),
+        ),
+      ),
       body: Container(
         child: Center(
           child: MyCustomForm(),
@@ -147,12 +119,12 @@ class MyCustomFormState extends State<MyCustomForm> {
     return Row(
       children: <Widget>[
         Container(
-          padding: EdgeInsets.all(20),
           child: ListView.builder(
+            padding: EdgeInsets.all(40),
             itemCount: _adsDataList.length,
             itemBuilder: (context, index) => Container(
               color: _selectedIndex != null && _selectedIndex == index
-                  ? Colors.red
+                  ? Colors.green
                   : Colors.white,
               child: ListTile(
                 title: Image.network(_adsDataList[index]),
