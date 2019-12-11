@@ -9,12 +9,12 @@ class AppState with ChangeNotifier {
 
   void setCountry(String newCountry) {
     country = newCountry;
-    print(newCountry);
+
     notifyListeners();
   }
 
   Future<void> logIn(String username, String password) async {
-    print("Login called with:$username $password");
+    user = User(username, password);
     loading = true;
     notifyListeners();
 
