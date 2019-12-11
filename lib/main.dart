@@ -31,7 +31,6 @@ class SelectCountryPage extends StatelessWidget {
     final appState = Provider.of<AppState>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink,
         title: Text("Select Country"),
       ),
       body: Center(
@@ -69,73 +68,79 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final appState = Provider.of<AppState>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.pink,
         title: Text("Login"),
       ),
       body: Center(
-        child: AnimatedCrossFade(
-          crossFadeState: appState.loading
-              ? CrossFadeState.showFirst
-              : CrossFadeState.showSecond,
-          duration: Duration(milliseconds: 250),
-          firstChild: Container(
-            width: MediaQuery.of(context).size.width / 4,
-            height: MediaQuery.of(context).size.height / 3,
-            child: Center(
-              child: CircularProgressIndicator(),
+        child: Consumer<AppState>(
+          builder: (_, appState, __) => AnimatedCrossFade(
+            crossFadeState: appState.loading
+                ? CrossFadeState.showFirst
+                : CrossFadeState.showSecond,
+            duration: Duration(milliseconds: 250),
+            firstChild: Container(
+              width: MediaQuery.of(context).size.width / 4,
+              height: MediaQuery.of(context).size.height / 3,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
-          ),
-          secondChild: Container(
-            width: MediaQuery.of(context).size.width / 4,
-            height: MediaQuery.of(context).size.height / 3,
-            child: Form(
-              key: _loginFormKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    "LOGIN",
-                    style: TextStyle(fontSize: 40, color: Colors.pink),
-                  ),
-                  SizedBox(
-                    height: 100,
-                  ),
-                  TextFormField(
-                    decoration: InputDecoration(hintText: "Username:"),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      username = value;
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                    obscureText: true,
-                    decoration: InputDecoration(hintText: "Password:"),
-                    validator: (value) {
-                      if (value.isEmpty) {
-                        return 'Please enter some text';
-                      }
-                      password = value;
-                      return null;
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    child: RaisedButton(
-                      onPressed: () {
-                        if (_loginFormKey.currentState.validate()) {
-                          appState.logIn(username, password);
-                        }
-                      },
-                      child: Text('Login'),
+            secondChild: Container(
+              width: MediaQuery.of(context).size.width / 4,
+              height: MediaQuery.of(context).size.height,
+              child: Form(
+                key: _loginFormKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "LOGIN",
+                      style: TextStyle(fontSize: 40, color: Colors.pink),
                     ),
-                  ),
-                ],
+                    SizedBox(
+                      height: 100,
+                    ),
+                    TextFormField(
+                      decoration: InputDecoration(hintText: "Username:"),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        username = value;
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      obscureText: true,
+                      decoration: InputDecoration(hintText: "Password:"),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Please enter some text';
+                        }
+                        password = value;
+                        return null;
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 16.0),
+                      child: RaisedButton(
+                        onPressed: () {
+                          if (_loginFormKey.currentState.validate()) {
+                            appState.logIn(username, password).then((_) {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => BuildAdPage()),
+                              );
+                            });
+                          }
+                        },
+                        child: Text('Login'),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -151,7 +156,7 @@ class BuildAdPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Consumer<AppState>(
-          builder: (context, appState, child) => Text(appState.country),
+          builder: (_, appState, __) => Text(appState.country),
         ),
       ),
       body: Container(
@@ -217,6 +222,7 @@ class MyCustomFormState extends State<MyCustomForm> {
           width: MediaQuery.of(context).size.width / 2,
         ),
         Container(
+          padding: EdgeInsets.all(30),
           width: MediaQuery.of(context).size.width / 2,
           child: Form(
             key: _formKey,

@@ -13,10 +13,14 @@ class AppState with ChangeNotifier {
     notifyListeners();
   }
 
-  void logIn(String username, String password) {
+  Future<void> logIn(String username, String password) async {
     print("Login called with:$username $password");
     loading = true;
-    Future.delayed(Duration(seconds: 3));
+    notifyListeners();
+
+    await new Future.delayed(const Duration(seconds: 2));
+
+    loading = false;
     loginState = true;
     notifyListeners();
   }
