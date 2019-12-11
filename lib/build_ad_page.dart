@@ -1,3 +1,5 @@
+import 'package:distributed_databases_app/ad_player_page.dart';
+import 'package:distributed_databases_app/orders_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'state.dart';
@@ -7,11 +9,49 @@ class BuildAdPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Consumer<AppState>(
-          builder: (_, appState, __) => Text(
-              "Country: ${appState.country}\nUsername: ${appState.user.username}"),
-        ),
-      ),
+          actions: <Widget>[
+            Consumer<AppState>(
+              builder: (_, appState, __) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  "Country: ${appState.country}\nUsername: ${appState.user.username}",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ),
+          ],
+          title: Row(
+            children: <Widget>[
+              FlatButton(
+                child: Text(
+                  "Orders",
+                  style: TextStyle(color: Colors.white, fontSize: 30),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => OrdersPage(),
+                    ),
+                  );
+                },
+              ),
+              FlatButton(
+                child: Text(
+                  "AD player",
+                  style: TextStyle(color: Colors.white, fontSize: 30),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => AdPlayerPage(),
+                    ),
+                  );
+                },
+              )
+            ],
+          )),
       body: Container(
         child: Center(
           child: MyCustomForm(),
