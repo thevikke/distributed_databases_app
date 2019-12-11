@@ -65,59 +65,78 @@ class SelectCountryPage extends StatelessWidget {
 
 class LoginPage extends StatelessWidget {
   final _loginFormKey = GlobalKey<FormState>();
+  String username = "", password = "";
+
   @override
   Widget build(BuildContext context) {
+    final appState = Provider.of<AppState>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.pink,
         title: Text("Login"),
       ),
       body: Center(
-        child: Container(
-          width: MediaQuery.of(context).size.width / 4,
-          height: MediaQuery.of(context).size.height / 3,
-          child: Form(
-            key: _loginFormKey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "LOGIN",
-                  style: TextStyle(fontSize: 40, color: Colors.pink),
-                ),
-                SizedBox(
-                  height: 100,
-                ),
-                TextFormField(
-                  decoration: InputDecoration(hintText: "Username:"),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  decoration: InputDecoration(hintText: "Password:"),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    return null;
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: RaisedButton(
-                    onPressed: () {
-                      if (_loginFormKey.currentState.validate()) {
-                        print("working!");
-                      }
-                    },
-                    child: Text('Login'),
+        child: AnimatedCrossFade(
+          crossFadeState: appState.loading
+              ? CrossFadeState.showFirst
+              : CrossFadeState.showSecond,
+          duration: Duration(milliseconds: 250),
+          firstChild: Container(
+            width: MediaQuery.of(context).size.width / 4,
+            height: MediaQuery.of(context).size.height / 3,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          ),
+          secondChild: Container(
+            width: MediaQuery.of(context).size.width / 4,
+            height: MediaQuery.of(context).size.height / 3,
+            child: Form(
+              key: _loginFormKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    "LOGIN",
+                    style: TextStyle(fontSize: 40, color: Colors.pink),
                   ),
-                ),
-              ],
+                  SizedBox(
+                    height: 100,
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(hintText: "Username:"),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      username = value;
+                      return null;
+                    },
+                  ),
+                  TextFormField(
+                    obscureText: true,
+                    decoration: InputDecoration(hintText: "Password:"),
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter some text';
+                      }
+                      password = value;
+                      return null;
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 16.0),
+                    child: RaisedButton(
+                      onPressed: () {
+                        if (_loginFormKey.currentState.validate()) {
+                          appState.logIn(username, password);
+                        }
+                      },
+                      child: Text('Login'),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
