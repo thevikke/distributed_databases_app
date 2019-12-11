@@ -20,12 +20,12 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Distributed Databases Demo',
-          home: SelectCountry(),
+          home: SelectCountryPage(),
         ));
   }
 }
 
-class SelectCountry extends StatelessWidget {
+class SelectCountryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appState = Provider.of<AppState>(context, listen: false);
@@ -41,19 +41,19 @@ class SelectCountry extends StatelessWidget {
             ImageButton(() {
               appState.setCountry("Finland");
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return CountryPage();
+                return LoginPage();
               }));
             }, finnishFlagURL, "Finland"),
             ImageButton(() {
               appState.setCountry("Spain");
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return CountryPage();
+                return LoginPage();
               }));
             }, spanishFlagURL, "Spain"),
             ImageButton(() {
               appState.setCountry("France");
               Navigator.push(context, MaterialPageRoute(builder: (context) {
-                return CountryPage();
+                return LoginPage();
               }));
             }, frenchFlagURL, "France"),
           ],
@@ -63,7 +63,70 @@ class SelectCountry extends StatelessWidget {
   }
 }
 
-class CountryPage extends StatelessWidget {
+class LoginPage extends StatelessWidget {
+  final _loginFormKey = GlobalKey<FormState>();
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.pink,
+        title: Text("Login"),
+      ),
+      body: Center(
+        child: Container(
+          width: MediaQuery.of(context).size.width / 4,
+          height: MediaQuery.of(context).size.height / 3,
+          child: Form(
+            key: _loginFormKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  "LOGIN",
+                  style: TextStyle(fontSize: 40, color: Colors.pink),
+                ),
+                SizedBox(
+                  height: 100,
+                ),
+                TextFormField(
+                  decoration: InputDecoration(hintText: "Username:"),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  decoration: InputDecoration(hintText: "Password:"),
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: RaisedButton(
+                    onPressed: () {
+                      if (_loginFormKey.currentState.validate()) {
+                        print("working!");
+                      }
+                    },
+                    child: Text('Login'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class BuildAdPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -284,7 +347,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                         ));
                       }
                     },
-                    child: Text('Submit'),
+                    child: Text('Create Ad'),
                   ),
                 ),
               ],
