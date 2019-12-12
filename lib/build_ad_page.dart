@@ -2,6 +2,7 @@ import 'package:distributed_databases_app/ad_player_page.dart';
 import 'package:distributed_databases_app/orders_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'models.dart';
 import 'state.dart';
 
 class BuildAdPage extends StatelessWidget {
@@ -73,6 +74,10 @@ class MyCustomFormState extends State<MyCustomForm> {
   List<bool> _selectionsScreenSize = List.generate(3, (_) => false);
   List<bool> _selectionsDaysHours = List.generate(2, (_) => false);
   List<bool> _selectionsAds = List.generate(5, (_) => false);
+
+  Order order;
+  bool isHours;
+
   final List<String> _adsDataList = [
     "https://static.independent.co.uk/s3fs-public/thumbnails/image/2017/11/21/11/ramsay-cass-beer.png",
     "https://dmrqkbkq8el9i.cloudfront.net/Pictures/480xany/4/5/9/168459_countrylifebuttertheresamayadvert_892560_crop.jpg",
@@ -85,16 +90,31 @@ class MyCustomFormState extends State<MyCustomForm> {
   void initState() {
     _selectionsScreenSize[0] = true;
     _selectionsDaysHours[0] = true;
+    isHours = false;
     _selectionsAds[0] = true;
+    order = Order(
+        orderId: 0,
+        agencyId: 0,
+        cityId: 0,
+        amount: 0,
+        contentURL: _adsDataList[0],
+        duration: 0,
+        numberRepeats: 0,
+        screenType: "BillBoard");
+
     super.initState();
   }
 
   _onSelected(int index) {
-    setState(() => _selectedIndex = index);
+    setState(() {
+      _selectedIndex = index;
+      order.contentURL = _adsDataList[_selectedIndex];
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    final appState = Provider.of<AppState>(context, listen: false);
     // Build a Form widget using the _formKey created above.
     return Row(
       children: <Widget>[
@@ -175,6 +195,13 @@ class MyCustomFormState extends State<MyCustomForm> {
                         } else {
                           _selectionsScreenSize[buttonIndex] = false;
                         }
+                        if (index == 0) {
+                          order.screenType = "BillBoard";
+                        } else if (index == 1) {
+                          order.screenType = "Stading";
+                        } else {
+                          order.screenType = "Small";
+                        }
                       }
                     });
                   },
@@ -190,6 +217,14 @@ class MyCustomFormState extends State<MyCustomForm> {
                           if (value.isEmpty) {
                             return 'Please enter some text';
                           }
+                          setState(() {
+                            if (isHours) {
+                              order.duration = int.parse(value);
+                            } else {
+                              int tmp = int.parse(value);
+                              order.duration = (tmp * 24).round();
+                            }
+                          });
                           return null;
                         },
                       ),
@@ -236,6 +271,12 @@ class MyCustomFormState extends State<MyCustomForm> {
                                 _selectionsDaysHours[buttonIndex] = false;
                               }
                             }
+                            // Set if we want to count the duration in hours or days
+                            if (index == 0) {
+                              isHours = false;
+                            } else {
+                              isHours = true;
+                            }
                           });
                         },
                         isSelected: _selectionsDaysHours,
@@ -250,6 +291,9 @@ class MyCustomFormState extends State<MyCustomForm> {
                     if (value.isEmpty) {
                       return 'Please enter some text';
                     }
+                    setState(() {
+                      order.numberRepeats = int.parse(value);
+                    });
                     return null;
                   },
                 ),
@@ -258,11 +302,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                   child: RaisedButton(
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        // If the form is valid, display a Snackbar.
-                        Scaffold.of(context).showSnackBar(SnackBar(
-                          content: Text('Processing Data'),
-                          backgroundColor: Colors.green,
-                        ));
+                        appState.createAd(order);
                       }
                     },
                     child: Text('Create Ad'),
