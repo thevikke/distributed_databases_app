@@ -124,7 +124,7 @@ class MyCustomFormState extends State<MyCustomForm> {
             itemCount: _adsDataList.length,
             itemBuilder: (context, index) => Container(
               color: _selectedIndex != null && _selectedIndex == index
-                  ? Colors.green
+                  ? Colors.blue
                   : Colors.white,
               child: ListTile(
                 title: Image.network(_adsDataList[index]),

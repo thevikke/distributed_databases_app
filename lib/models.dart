@@ -1,4 +1,5 @@
 class User {
+  int id = 0;
   String username = "empty";
   String password = "empty";
   User(this.password, this.username);

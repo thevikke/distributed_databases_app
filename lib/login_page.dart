@@ -69,11 +69,13 @@ class LoginPage extends StatelessWidget {
                         onPressed: () {
                           if (_loginFormKey.currentState.validate()) {
                             appState.logIn(username, password).then((_) {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => BuildAdPage()),
-                              );
+                              if (appState.loginState == true) {
+                                Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => BuildAdPage()),
+                                );
+                              }
                             });
                           }
                         },

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:distributed_databases_app/models.dart';
 import 'package:flutter/material.dart';
 import 'models.dart';
@@ -24,10 +26,25 @@ class AppState with ChangeNotifier {
     loading = true;
     notifyListeners();
 
-    await new Future.delayed(const Duration(seconds: 2));
+    var response = await http.post(
+        "https://dooh.herokuapp.com/login?username=${user.username}&password=${user.password}",
+        headers: {
+          "Accept": "*/*",
+          "Access-Control-Allow-Origin": "*",
+          "Content-Type": "application/json"
+        });
 
+    try {
+      if (response.statusCode == 200) {
+        var jsonObject = json.decode(response.body);
+        user.id = jsonObject["id"];
+        loginState = true;
+      }
+    } catch (e) {
+      print(e);
+    }
     loading = false;
-    loginState = true;
+    print(user.id);
     notifyListeners();
   }
 
