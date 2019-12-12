@@ -38,16 +38,20 @@ class Order {
   int cityId;
   int duration;
   int numberRepeats;
+  int screenId;
+  int price;
 
   Order(
-      {this.orderId,
-      this.amount,
-      this.screenType,
-      this.agencyId,
-      this.cityId,
-      this.duration,
-      this.numberRepeats,
-      this.contentURL});
+      {this.orderId = 0,
+      this.amount = 0,
+      this.screenType = "",
+      this.agencyId = 0,
+      this.cityId = 0,
+      this.duration = 0,
+      this.numberRepeats = 0,
+      this.contentURL = " ",
+      this.screenId = 0,
+      this.price = 0});
 
   Order.fromJson(Map<String, dynamic> json) {
     orderId = json['order_id'];
@@ -56,9 +60,11 @@ class Order {
     agencyId = json['agency_id'];
     cityId = json['city_id'];
     duration = json['duration'];
-    numberRepeats = json['number_repeats'];
+    numberRepeats = json['number_of_repeat'];
     //!ContentURL ???----------------
     contentURL = json['content_url'];
+    screenId = json['screenId'];
+    price = json['price'];
   }
 
   Map<String, dynamic> toJson() {
@@ -71,6 +77,31 @@ class Order {
     data['duration'] = this.duration;
     data['number_repeats'] = this.numberRepeats;
     data['content_url'] = this.contentURL;
+    return data;
+  }
+}
+
+class Screen {
+  String type;
+  int screenId;
+  int price;
+  int cityId;
+
+  Screen({this.type, this.screenId, this.price, this.cityId});
+
+  Screen.fromJson(Map<String, dynamic> json) {
+    type = json['type'];
+    screenId = json['screen_id'];
+    price = json['price'];
+    cityId = json['city_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['type'] = this.type;
+    data['screen_id'] = this.screenId;
+    data['price'] = this.price;
+    data['city_id'] = this.cityId;
     return data;
   }
 }

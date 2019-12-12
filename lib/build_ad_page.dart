@@ -112,6 +112,200 @@ class MyCustomFormState extends State<MyCustomForm> {
     });
   }
 
+  Widget _buildChild(var appState) {
+    print(appState.country);
+    if (appState.country == "SPA") {
+      return ToggleButtons(
+        children: <Widget>[
+          Container(),
+          Container(),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Icon(
+                Icons.tv,
+                size: 100,
+              ),
+              Column(
+                children: <Widget>[
+                  Text(
+                    "Small",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text("Price: 25€")
+                ],
+              )
+            ],
+          ),
+        ],
+        onPressed: (int index) {
+          setState(() {
+            for (int buttonIndex = 0;
+                buttonIndex < _selectionsScreenSize.length;
+                buttonIndex++) {
+              if (buttonIndex == index) {
+                _selectionsScreenSize[buttonIndex] = true;
+              } else {
+                _selectionsScreenSize[buttonIndex] = false;
+              }
+              if (index == 0) {
+                order.screenType = "billboard";
+              } else if (index == 1) {
+                order.screenType = "standing";
+              } else {
+                order.screenType = "small";
+              }
+            }
+          });
+        },
+        isSelected: _selectionsScreenSize,
+      );
+    } else if (appState.country == "FRA") {
+      return ToggleButtons(
+        children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Icon(
+                Icons.tv,
+                size: 300,
+              ),
+              Column(
+                children: <Widget>[
+                  Text(
+                    "Billboard",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text("Price: 100€")
+                ],
+              )
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Icon(
+                Icons.tv,
+                size: 200,
+              ),
+              Column(
+                children: <Widget>[
+                  Text(
+                    "Standing",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text("Price: 50€")
+                ],
+              )
+            ],
+          ),
+          Container()
+        ],
+        onPressed: (int index) {
+          setState(() {
+            for (int buttonIndex = 0;
+                buttonIndex < _selectionsScreenSize.length;
+                buttonIndex++) {
+              if (buttonIndex == index) {
+                _selectionsScreenSize[buttonIndex] = true;
+              } else {
+                _selectionsScreenSize[buttonIndex] = false;
+              }
+              if (index == 0) {
+                order.screenType = "billboard";
+              } else if (index == 1) {
+                order.screenType = "standing";
+              } else {
+                order.screenType = "small";
+              }
+            }
+          });
+        },
+        isSelected: _selectionsScreenSize,
+      );
+    } else {
+      return ToggleButtons(
+        children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Icon(
+                Icons.tv,
+                size: 300,
+              ),
+              Column(
+                children: <Widget>[
+                  Text(
+                    "Billboard",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text("Price: 100€")
+                ],
+              )
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Icon(
+                Icons.tv,
+                size: 200,
+              ),
+              Column(
+                children: <Widget>[
+                  Text(
+                    "Standing",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text("Price: 50€")
+                ],
+              )
+            ],
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Icon(
+                Icons.tv,
+                size: 100,
+              ),
+              Column(
+                children: <Widget>[
+                  Text(
+                    "Small",
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text("Price: 25€")
+                ],
+              )
+            ],
+          ),
+        ],
+        onPressed: (int index) {
+          setState(() {
+            for (int buttonIndex = 0;
+                buttonIndex < _selectionsScreenSize.length;
+                buttonIndex++) {
+              if (buttonIndex == index) {
+                _selectionsScreenSize[buttonIndex] = true;
+              } else {
+                _selectionsScreenSize[buttonIndex] = false;
+              }
+              if (index == 0) {
+                order.screenType = "billboard";
+              } else if (index == 1) {
+                order.screenType = "standing";
+              } else {
+                order.screenType = "small";
+              }
+            }
+          });
+        },
+        isSelected: _selectionsScreenSize,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final appState = Provider.of<AppState>(context, listen: false);
@@ -143,70 +337,7 @@ class MyCustomFormState extends State<MyCustomForm> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                ToggleButtons(
-                  children: <Widget>[
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Icon(
-                          Icons.tv,
-                          size: 300,
-                        ),
-                        Text(
-                          "Billboard",
-                          style: TextStyle(fontSize: 20),
-                        )
-                      ],
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Icon(
-                          Icons.tv,
-                          size: 200,
-                        ),
-                        Text(
-                          "Standing",
-                          style: TextStyle(fontSize: 20),
-                        )
-                      ],
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Icon(
-                          Icons.tv,
-                          size: 100,
-                        ),
-                        Text(
-                          "Small",
-                          style: TextStyle(fontSize: 20),
-                        )
-                      ],
-                    ),
-                  ],
-                  onPressed: (int index) {
-                    setState(() {
-                      for (int buttonIndex = 0;
-                          buttonIndex < _selectionsScreenSize.length;
-                          buttonIndex++) {
-                        if (buttonIndex == index) {
-                          _selectionsScreenSize[buttonIndex] = true;
-                        } else {
-                          _selectionsScreenSize[buttonIndex] = false;
-                        }
-                        if (index == 0) {
-                          order.screenType = "BillBoard";
-                        } else if (index == 1) {
-                          order.screenType = "Stading";
-                        } else {
-                          order.screenType = "Small";
-                        }
-                      }
-                    });
-                  },
-                  isSelected: _selectionsScreenSize,
-                ),
+                _buildChild(appState),
                 Row(
                   children: <Widget>[
                     Expanded(
@@ -302,7 +433,7 @@ class MyCustomFormState extends State<MyCustomForm> {
                   child: RaisedButton(
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
-                        appState.createAd(order);
+                        appState.createAd(order, context);
                       }
                     },
                     child: Text('Create Ad'),

@@ -39,19 +39,19 @@ class SelectCountryPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             ImageButton(() {
-              appState.setCountry("Finland");
+              appState.setCountry("FI");
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return LoginPage();
               }));
             }, finnishFlagURL, "Finland"),
             ImageButton(() {
-              appState.setCountry("Spain");
+              appState.setCountry("SPA");
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return LoginPage();
               }));
             }, spanishFlagURL, "Spain"),
             ImageButton(() {
-              appState.setCountry("France");
+              appState.setCountry("FRA");
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 return LoginPage();
               }));

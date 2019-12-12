@@ -1,4 +1,6 @@
+import 'package:distributed_databases_app/state.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AdPlayerPage extends StatelessWidget {
   const AdPlayerPage({Key key}) : super(key: key);
@@ -8,11 +10,12 @@ class AdPlayerPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: Center(
-        child: Container(
-          height: MediaQuery.of(context).size.height / 1.5,
-          width: MediaQuery.of(context).size.width / 2,
-          child: Image.network(
-              "https://static.independent.co.uk/s3fs-public/thumbnails/image/2017/11/21/11/ramsay-cass-beer.png"),
+        child: Consumer<AppState>(
+          builder: (_, state, __) => Container(
+            height: MediaQuery.of(context).size.height / 1.5,
+            width: MediaQuery.of(context).size.width / 2,
+            child: Image.network(state.selectedAd),
+          ),
         ),
       ),
     );

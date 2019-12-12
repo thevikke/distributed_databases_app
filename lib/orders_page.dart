@@ -1,4 +1,6 @@
+import 'package:distributed_databases_app/state.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class OrdersPage extends StatelessWidget {
   @override
@@ -7,21 +9,46 @@ class OrdersPage extends StatelessWidget {
       appBar: AppBar(
         title: Text("Your Orders"),
       ),
-      body: Center(
-        child: Container(
-          width: MediaQuery.of(context).size.width / 2,
-          height: MediaQuery.of(context).size.height,
-          child: ListView.builder(
-            itemBuilder: (context, index) {
-              return Card(
-                child: SizedBox(
+      body: Consumer<AppState>(
+        builder: (_, state, __) => Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width / 3,
+            height: MediaQuery.of(context).size.height,
+            child: ListView.builder(
+              itemCount: state.orders.length,
+              itemBuilder: (context, index) {
+                return Card(
+                  child: SizedBox(
                     width: 100,
-                    height: 100,
-                    child: Text(
-                      index.toString(),
-                    )),
-              );
-            },
+                    height: 300,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Order_id: ${state.orders[index].orderId}",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          Text("Agency_id: ${state.orders[index].agencyId}",
+                              style: TextStyle(fontSize: 20)),
+                          Text("Screen_type: ${state.orders[index].screenType}",
+                              style: TextStyle(fontSize: 20)),
+                          Text("Duration: ${state.orders[index].duration}",
+                              style: TextStyle(fontSize: 20)),
+                          Text(
+                              "Number_of_repeat: ${state.orders[index].numberRepeats}",
+                              style: TextStyle(fontSize: 20)),
+                          Text("Cost: ${state.orders[index].amount}",
+                              style: TextStyle(fontSize: 20)),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),

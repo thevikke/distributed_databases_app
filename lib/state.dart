@@ -1,12 +1,11 @@
 import 'dart:io';
 
 import 'package:distributed_databases_app/models.dart';
+import 'package:distributed_databases_app/orders_page.dart';
 import 'package:flutter/material.dart';
 import 'models.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-const orders_URL = "";
 
 class AppState with ChangeNotifier {
   String country = "empty";
@@ -14,7 +13,10 @@ class AppState with ChangeNotifier {
   bool loading = false;
   User user;
   Order newOrder;
-
+  List<Screen> screens = List<Screen>();
+  List<Order> orders = List<Order>();
+  String selectedAd =
+      "https://static.independent.co.uk/s3fs-public/thumbnails/image/2017/11/21/11/ramsay-cass-beer.png";
   void setCountry(String newCountry) {
     country = newCountry;
 
@@ -36,6 +38,7 @@ class AppState with ChangeNotifier {
 
     try {
       if (response.statusCode == 200) {
+        await loadScreens();
         var jsonObject = json.decode(response.body);
         user.id = jsonObject["id"];
         loginState = true;
@@ -44,29 +47,59 @@ class AppState with ChangeNotifier {
       print(e);
     }
     loading = false;
-    print(user.id);
+
     notifyListeners();
   }
 
-  // Future<List<Order>> loadOrders() async{
-  //   List<Order> orders;
-  //   var response = await http.get("$orders_URL");
+  Future<void> loadOrders() async {
+    var response = await http.get(
+        "https://dooh.herokuapp.com/orders?agency_id=${user.id}&country_code=$country");
 
-  //   try{
-  //     if(response.statusCode == 200)
-  //     {
+    try {
+      if (response.statusCode == 200) {
+        List json = jsonDecode(response.body);
+        json.forEach((orderJson) {
+          orders.add(new Order.fromJson(orderJson));
+        });
+        orders.forEach((order) {
+          print(order.orderId);
+        });
+      }
+    } catch (e) {}
+  }
 
-  //     }
-  //   }
-  //   catch(e)
-  //   {
+  Future<void> loadScreens() async {
+    var response = await http
+        .get("https://dooh.herokuapp.com/screens?country_code=$country");
+    var json = jsonDecode(response.body);
+    json.forEach((v) {
+      screens.add(new Screen.fromJson(v));
+    });
+  }
 
-  //   }
-  // return
-  // }
+  Future<void> createAd(Order newOrder, BuildContext context) async {
+    // print(
+    //     "---${newOrder.agencyId}\n---${newOrder.cityId}\n---${newOrder.orderId}\n---${newOrder.amount}\n---${newOrder.duration}\n---${newOrder.screenType}\n---${newOrder.numberRepeats}\n---${newOrder.contentURL}");
 
-  Future<void> createAd(Order newOrder) async {
-    print(
-        "---${newOrder.agencyId}\n---${newOrder.cityId}\n---${newOrder.orderId}\n---${newOrder.amount}\n---${newOrder.duration}\n---${newOrder.screenType}\n---${newOrder.numberRepeats}\n---${newOrder.contentURL}");
+    screens.forEach((screen) {
+      if (screen.type == newOrder.screenType) {
+        newOrder.screenId = screen.screenId;
+        newOrder.price = screen.price;
+      }
+    });
+
+    var response = await http.post(
+        "https://dooh.herokuapp.com/new_order?screen_id=1&country_code=$country&duration=${newOrder.duration}&number_of_repeat=${newOrder.numberRepeats}&price=${newOrder.price}&agency_id=${user.id}&screen_type=${newOrder.screenType}&city_id=1");
+
+    try {
+      if (response.statusCode == 200) {
+        selectedAd = newOrder.contentURL;
+        await loadOrders();
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => OrdersPage()));
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }
