@@ -5,13 +5,7 @@ import 'package:provider/provider.dart';
 import 'models.dart';
 import 'state.dart';
 
-class BuildAdPage extends StatefulWidget {
-  @override
-  _BuildAdPageState createState() => _BuildAdPageState();
-}
-
-class _BuildAdPageState extends State<BuildAdPage> {
-//! make [FutureBuilder]
+class BuildAdPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

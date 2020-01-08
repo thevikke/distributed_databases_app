@@ -66,6 +66,7 @@ class AppState with ChangeNotifier {
         // });
       }
     } catch (e) {}
+    notifyListeners();
   }
 
   Future<void> loadScreens() async {

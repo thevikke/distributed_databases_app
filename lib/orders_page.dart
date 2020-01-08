@@ -2,7 +2,17 @@ import 'package:distributed_databases_app/state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class OrdersPage extends StatelessWidget {
+class OrdersPage extends StatefulWidget {
+  @override
+  _OrdersPageState createState() => _OrdersPageState();
+}
+
+class _OrdersPageState extends State<OrdersPage> {
+  initState() {
+    super.initState();
+    Provider.of<AppState>(context, listen: false).loadOrders();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
