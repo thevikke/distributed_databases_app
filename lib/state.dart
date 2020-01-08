@@ -84,14 +84,12 @@ class AppState with ChangeNotifier {
     // print(
     //     "---${newOrder.agencyId}\n---${newOrder.cityId}\n---${newOrder.orderId}\n---${newOrder.amount}\n---${newOrder.duration}\n---${newOrder.screenType}\n---${newOrder.numberRepeats}\n---${newOrder.contentURL}");
 
-    screens.forEach((screen) {
+    screens.forEach((Screen screen) async {
       if (screen.type == newOrder.screenType) {
         newOrder.screenId = screen.screenId;
         newOrder.price = screen.price;
       }
-    });
 
-    screens.forEach((Screen screen) async {
       if (screen.type == newOrder.screenType) {
         var response = await http.post(
             "https://dooh.herokuapp.com/new_order?screen_id=${screen.screenId}&country_code=$country&duration=${newOrder.duration}&number_of_repeat=${newOrder.numberRepeats}&price=${newOrder.price}&agency_id=${user.id}&screen_type=${newOrder.screenType}&city_id=1");
