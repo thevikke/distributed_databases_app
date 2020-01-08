@@ -75,6 +75,8 @@ class AppState with ChangeNotifier {
     var json = jsonDecode(response.body);
     json.forEach((v) {
       screens.add(new Screen.fromJson(v));
+      var tmp = new Screen.fromJson(v);
+      print("screen id: ${tmp.screenId}");
     });
   }
 
@@ -89,18 +91,21 @@ class AppState with ChangeNotifier {
       }
     });
 
-    var response = await http.post(
-        "https://dooh.herokuapp.com/new_order?screen_id=1&country_code=$country&duration=${newOrder.duration}&number_of_repeat=${newOrder.numberRepeats}&price=${newOrder.price}&agency_id=${user.id}&screen_type=${newOrder.screenType}&city_id=1");
-
-    try {
-      if (response.statusCode == 200) {
-        selectedAd = newOrder.contentURL;
-        await loadOrders();
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => OrdersPage()));
+    screens.forEach((Screen screen) async {
+      if (screen.type == newOrder.screenType) {
+        var response = await http.post(
+            "https://dooh.herokuapp.com/new_order?screen_id=${screen.screenId}&country_code=$country&duration=${newOrder.duration}&number_of_repeat=${newOrder.numberRepeats}&price=${newOrder.price}&agency_id=${user.id}&screen_type=${newOrder.screenType}&city_id=1");
+        try {
+          if (response.statusCode == 200) {
+            selectedAd = newOrder.contentURL;
+            await loadOrders();
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => OrdersPage()));
+          }
+        } catch (e) {
+          print(e);
+        }
       }
-    } catch (e) {
-      print(e);
-    }
+    });
   }
 }
