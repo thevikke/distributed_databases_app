@@ -5,7 +5,13 @@ import 'package:provider/provider.dart';
 import 'models.dart';
 import 'state.dart';
 
-class BuildAdPage extends StatelessWidget {
+class BuildAdPage extends StatefulWidget {
+  @override
+  _BuildAdPageState createState() => _BuildAdPageState();
+}
+
+class _BuildAdPageState extends State<BuildAdPage> {
+//! make [FutureBuilder]
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,7 +106,7 @@ class MyCustomFormState extends State<MyCustomForm> {
         contentURL: _adsDataList[0],
         duration: 0,
         numberRepeats: 0,
-        screenType: "BillBoard");
+        screenType: "billboard");
 
     super.initState();
   }
@@ -108,6 +114,8 @@ class MyCustomFormState extends State<MyCustomForm> {
   _onSelected(int index) {
     setState(() {
       _selectedIndex = index;
+      order.contentURL = _adsDataList[_selectedIndex];
+      print(order.contentURL);
       order.contentURL = _adsDataList[_selectedIndex];
     });
   }
@@ -415,28 +423,52 @@ class MyCustomFormState extends State<MyCustomForm> {
                     )
                   ],
                 ),
-                TextFormField(
-                  decoration:
-                      InputDecoration(hintText: "Number of repeats/Hour"),
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Please enter some text';
-                    }
-                    setState(() {
-                      order.numberRepeats = int.parse(value);
+                // TextFormField(
+                //   decoration:
+                //       InputDecoration(hintText: "Number of repeats/Hour"),
+                //   validator: (value) {
+                //     if (value.isEmpty) {
+                //       return 'Please enter some text';
+                //     }
+                //     setState(() {
+                //       order.numberRepeats = int.parse(value);
+                //     });
+                //     return null;
+                //   },
+                // ),
+                RaisedButton(
+                  color: Colors.grey,
+                  child: Text("Select date"),
+                  onPressed: () {
+                    showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2018),
+                      lastDate: DateTime(2030),
+                      builder: (BuildContext context, Widget child) {
+                        return Theme(
+                          data: ThemeData.dark(),
+                          child: child,
+                        );
+                      },
+                    ).then((DateTime selectedTime) {
+                      order.time = selectedTime;
                     });
-                    return null;
                   },
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: RaisedButton(
+                    color: Colors.blue,
                     onPressed: () {
                       if (_formKey.currentState.validate()) {
                         appState.createAd(order, context);
                       }
                     },
-                    child: Text('Create Ad'),
+                    child: Text(
+                      'Create Ad',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               ],

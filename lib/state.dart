@@ -61,9 +61,9 @@ class AppState with ChangeNotifier {
         json.forEach((orderJson) {
           orders.add(new Order.fromJson(orderJson));
         });
-        orders.forEach((order) {
-          print(order.orderId);
-        });
+        // orders.forEach((order) {
+        //   print(order.orderId);
+        // });
       }
     } catch (e) {}
   }

@@ -5,12 +5,12 @@ class User {
   User(this.password, this.username);
 }
 
-class Articles {
+class Orders {
   List<Order> orders;
 
-  Articles({this.orders});
+  Orders({this.orders});
 
-  Articles.fromJson(Map<String, dynamic> json) {
+  Orders.fromJson(Map<String, dynamic> json) {
     if (json['orders'] != null) {
       orders = new List<Order>();
       json['orders'].forEach((v) {
@@ -40,6 +40,7 @@ class Order {
   int numberRepeats;
   int screenId;
   int price;
+  DateTime time;
 
   Order(
       {this.orderId = 0,
@@ -51,7 +52,8 @@ class Order {
       this.numberRepeats = 0,
       this.contentURL = " ",
       this.screenId = 0,
-      this.price = 0});
+      this.price = 0,
+      this.time});
 
   Order.fromJson(Map<String, dynamic> json) {
     orderId = json['order_id'];
@@ -65,6 +67,7 @@ class Order {
     contentURL = json['content_url'];
     screenId = json['screenId'];
     price = json['price'];
+    time = json['time'];
   }
 
   Map<String, dynamic> toJson() {
@@ -77,6 +80,7 @@ class Order {
     data['duration'] = this.duration;
     data['number_repeats'] = this.numberRepeats;
     data['content_url'] = this.contentURL;
+    data['time'] = this.time;
     return data;
   }
 }

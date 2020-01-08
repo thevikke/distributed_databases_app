@@ -37,11 +37,11 @@ class OrdersPage extends StatelessWidget {
                               style: TextStyle(fontSize: 20)),
                           Text("Duration: ${state.orders[index].duration}",
                               style: TextStyle(fontSize: 20)),
-                          Text(
-                              "Number_of_repeat: ${state.orders[index].numberRepeats}",
+                          Text("Start time of playing: ",
                               style: TextStyle(fontSize: 20)),
                           Text("Cost: ${state.orders[index].amount}",
                               style: TextStyle(fontSize: 20)),
+                          //! URL
                         ],
                       ),
                     ),
