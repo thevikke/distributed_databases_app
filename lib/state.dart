@@ -80,8 +80,10 @@ class AppState with ChangeNotifier {
     String url = "";
     if (location.isEmpty) {
       url = "https://dooh.herokuapp.com/reports?duration=$duration";
+      duration = 0;
     } else {
       url = "https://dooh.herokuapp.com/reports?location=$location";
+      location = "";
     }
 
     var response = await http.get(url);
