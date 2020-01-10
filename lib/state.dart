@@ -93,15 +93,18 @@ class AppState with ChangeNotifier {
         try {
           if (response.statusCode == 200) {
             selectedAd = newOrder.contentURL;
-            await loadOrders();
           }
         } catch (e) {
           print(e);
         }
       }
     });
-
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => OrdersPage()));
+    loadOrders().then((_) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => OrdersPage(),
+        ),
+      );
+    });
   }
 }
