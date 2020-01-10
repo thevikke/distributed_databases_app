@@ -69,6 +69,14 @@ class MyCustomForm extends StatefulWidget {
   }
 }
 
+const List<String> adsDataList = [
+  "https://static.independent.co.uk/s3fs-public/thumbnails/image/2017/11/21/11/ramsay-cass-beer.png",
+  "https://dmrqkbkq8el9i.cloudfront.net/Pictures/480xany/4/5/9/168459_countrylifebuttertheresamayadvert_892560_crop.jpg",
+  "https://d3bzyjrsc4233l.cloudfront.net/cache/57/cd/57cdb9941612f4aeb20b732ee7d4abc9.jpg",
+  "https://adverts-group.com/wp-content/uploads/2017/05/tav-ads-may-ads-en.png",
+  "https://d1e4pidl3fu268.cloudfront.net/567dc4ea-e383-4c32-ad75-1e4246ca7fdc/Advertsle1.crop_509x382_0,235.preview.png"
+];
+
 class MyCustomFormState extends State<MyCustomForm> {
   final _formKey = GlobalKey<FormState>();
   List<bool> _selectionsScreenSize = List.generate(3, (_) => false);
@@ -78,13 +86,6 @@ class MyCustomFormState extends State<MyCustomForm> {
   Order order;
   bool isHours;
 
-  final List<String> _adsDataList = [
-    "https://static.independent.co.uk/s3fs-public/thumbnails/image/2017/11/21/11/ramsay-cass-beer.png",
-    "https://dmrqkbkq8el9i.cloudfront.net/Pictures/480xany/4/5/9/168459_countrylifebuttertheresamayadvert_892560_crop.jpg",
-    "https://d3bzyjrsc4233l.cloudfront.net/cache/57/cd/57cdb9941612f4aeb20b732ee7d4abc9.jpg",
-    "https://adverts-group.com/wp-content/uploads/2017/05/tav-ads-may-ads-en.png",
-    "https://d1e4pidl3fu268.cloudfront.net/567dc4ea-e383-4c32-ad75-1e4246ca7fdc/Advertsle1.crop_509x382_0,235.preview.png"
-  ];
   int _selectedIndex = 0;
   @override
   void initState() {
@@ -97,7 +98,7 @@ class MyCustomFormState extends State<MyCustomForm> {
         agencyId: 0,
         cityId: 0,
         amount: 0,
-        contentURL: _adsDataList[0],
+        contentURL: adsDataList[0],
         duration: 0,
         numberRepeats: 0,
         screenType: "billboard");
@@ -108,9 +109,9 @@ class MyCustomFormState extends State<MyCustomForm> {
   _onSelected(int index) {
     setState(() {
       _selectedIndex = index;
-      order.contentURL = _adsDataList[_selectedIndex];
+      order.contentURL = adsDataList[_selectedIndex];
 
-      order.contentURL = _adsDataList[_selectedIndex];
+      order.contentURL = adsDataList[_selectedIndex];
     });
   }
 
@@ -316,13 +317,13 @@ class MyCustomFormState extends State<MyCustomForm> {
         Container(
           child: ListView.builder(
             padding: EdgeInsets.all(40),
-            itemCount: _adsDataList.length,
+            itemCount: adsDataList.length,
             itemBuilder: (context, index) => Container(
               color: _selectedIndex != null && _selectedIndex == index
                   ? Colors.blue
                   : Colors.white,
               child: ListTile(
-                title: Image.network(_adsDataList[index]),
+                title: Image.network(adsDataList[index]),
                 onTap: () => _onSelected(index),
               ),
             ),

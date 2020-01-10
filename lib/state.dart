@@ -17,7 +17,6 @@ class AppState with ChangeNotifier {
       "https://static.independent.co.uk/s3fs-public/thumbnails/image/2017/11/21/11/ramsay-cass-beer.png";
   void setCountry(String newCountry) {
     country = newCountry;
-
     notifyListeners();
   }
 

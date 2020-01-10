@@ -1,3 +1,5 @@
+import 'dart:math';
+import 'build_ad_page.dart';
 import 'package:distributed_databases_app/state.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +15,8 @@ class _OrdersPageState extends State<OrdersPage> {
     super.initState();
   }
 
+  Random random = Random();
+  int rnd = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,6 +31,7 @@ class _OrdersPageState extends State<OrdersPage> {
             child: ListView.builder(
               itemCount: state.orders.length,
               itemBuilder: (context, index) {
+                rnd = random.nextInt(adsDataList.length);
                 return Card(
                   child: SizedBox(
                     width: 100,
@@ -47,11 +52,11 @@ class _OrdersPageState extends State<OrdersPage> {
                               style: TextStyle(fontSize: 20)),
                           Text("Duration: ${state.orders[index].duration}",
                               style: TextStyle(fontSize: 20)),
-                          Text("Start time of playing: ",
-                              style: TextStyle(fontSize: 20)),
+                          // Text("Start time of playing: ",
+                          //     style: TextStyle(fontSize: 20)),
                           Text("Cost: ${state.orders[index].amount}",
                               style: TextStyle(fontSize: 20)),
-                          //! URL
+                          Image.network(adsDataList[rnd]),
                         ],
                       ),
                     ),
