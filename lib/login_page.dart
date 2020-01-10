@@ -1,3 +1,4 @@
+import 'package:distributed_databases_app/admin_page.dart';
 import 'package:distributed_databases_app/build_ad_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -70,11 +71,19 @@ class LoginPage extends StatelessWidget {
                           if (_loginFormKey.currentState.validate()) {
                             appState.logIn(username, password).then((_) {
                               if (appState.loginState == true) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => BuildAdPage()),
-                                );
+                                if (appState.user.username == "admin") {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => AdminPage()),
+                                  );
+                                } else {
+                                  Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => BuildAdPage()),
+                                  );
+                                }
                               }
                             });
                           }

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:distributed_databases_app/models.dart';
 import 'package:distributed_databases_app/orders_page.dart';
 import 'package:flutter/material.dart';
@@ -97,13 +95,14 @@ class AppState with ChangeNotifier {
           if (response.statusCode == 200) {
             selectedAd = newOrder.contentURL;
             await loadOrders();
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => OrdersPage()));
           }
         } catch (e) {
           print(e);
         }
       }
     });
+
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => OrdersPage()));
   }
 }

@@ -109,13 +109,12 @@ class MyCustomFormState extends State<MyCustomForm> {
     setState(() {
       _selectedIndex = index;
       order.contentURL = _adsDataList[_selectedIndex];
-      print(order.contentURL);
+
       order.contentURL = _adsDataList[_selectedIndex];
     });
   }
 
   Widget _buildChild(var appState) {
-    print(appState.country);
     if (appState.country == "SPA") {
       return ToggleButtons(
         children: <Widget>[

@@ -9,8 +9,8 @@ class OrdersPage extends StatefulWidget {
 
 class _OrdersPageState extends State<OrdersPage> {
   initState() {
-    super.initState();
     Provider.of<AppState>(context, listen: false).loadOrders();
+    super.initState();
   }
 
   @override
