@@ -9,14 +9,27 @@ class AppState with ChangeNotifier {
   String country = "empty";
   bool loginState = false;
   bool loading = false;
+  int duration = 0;
+  String location = "";
   User user;
   Order newOrder;
   List<Screen> screens = List<Screen>();
   List<Order> orders = List<Order>();
+  List<Report> reports = List<Report>();
   String selectedAd =
       "https://static.independent.co.uk/s3fs-public/thumbnails/image/2017/11/21/11/ramsay-cass-beer.png";
   void setCountry(String newCountry) {
     country = newCountry;
+    notifyListeners();
+  }
+
+  void setLocation(String newLocation) {
+    location = newLocation;
+    notifyListeners();
+  }
+
+  void setDuration(int newDuration) {
+    duration = newDuration;
     notifyListeners();
   }
 
@@ -58,9 +71,24 @@ class AppState with ChangeNotifier {
         json.forEach((orderJson) {
           orders.add(new Order.fromJson(orderJson));
         });
-        // orders.forEach((order) {
-        //   print(order.orderId);
-        // });
+      }
+    } catch (e) {}
+    notifyListeners();
+  }
+
+  Future<void> loadReports() async {
+    String url = "";
+    if (location.isEmpty) {
+      url = "https://dooh.herokuapp.com/reports?duration=$duration";
+    } else {
+      url = "https://dooh.herokuapp.com/reports?location=$location";
+    }
+
+    var response = await http.get(url);
+
+    try {
+      if (response.statusCode == 200) {
+        reports = reportFromJson(response.body);
       }
     } catch (e) {}
     notifyListeners();
@@ -72,8 +100,6 @@ class AppState with ChangeNotifier {
     var json = jsonDecode(response.body);
     json.forEach((v) {
       screens.add(new Screen.fromJson(v));
-      var tmp = new Screen.fromJson(v);
-      print("screen id: ${tmp.screenId}");
     });
   }
 

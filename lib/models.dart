@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class User {
   int id = 0;
   String username = "empty";
@@ -108,4 +110,40 @@ class Screen {
     data['city_id'] = this.cityId;
     return data;
   }
+}
+
+List<Report> reportFromJson(String str) =>
+    List<Report>.from(json.decode(str).map((x) => Report.fromJson(x)));
+
+String reportToJson(List<Report> data) =>
+    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
+class Report {
+  double sumDuration;
+  String agencyName;
+  String location;
+  int agencyId;
+  int amount;
+
+  Report(
+      {this.sumDuration,
+      this.agencyName,
+      this.location,
+      this.agencyId,
+      this.amount});
+
+  factory Report.fromJson(Map<String, dynamic> json) => Report(
+      sumDuration: json["sum"],
+      agencyName: json["agency_name"],
+      location: json["location"],
+      agencyId: json["agency_id"],
+      amount: json["amount"]);
+
+  Map<String, dynamic> toJson() => {
+        "sum": sumDuration,
+        "agency_name": agencyName,
+        "location": location,
+        "agency_id": agencyId,
+        "amount": amount
+      };
 }

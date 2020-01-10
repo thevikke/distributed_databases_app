@@ -12,3 +12,5 @@ sunny - sunny
 cloudy - cloudy
 nerdy - nerdy
 funny - funny
+janet - janet
+jane - jane
